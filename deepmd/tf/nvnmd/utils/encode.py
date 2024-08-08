@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 
-from deepmd.tf.nvnmd.data.data import (
+from deepmd.nvnmd.data.data import (
     jdata_sys,
 )
 

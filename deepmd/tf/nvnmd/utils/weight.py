@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 import logging
 
-from deepmd.tf.env import (
+from deepmd.env import (
     tf,
 )
-from deepmd.tf.nvnmd.utils.config import (
+from deepmd.nvnmd.utils.config import (
     nvnmd_cfg,
 )
 

@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 import logging
 
+import copy
 import numpy as np
 
-from deepmd.tf.nvnmd.data.data import (
+from deepmd.nvnmd.data.data import (
     NVNMD_CITATION,
     NVNMD_WELCOME,
     jdata_config_v0,
@@ -17,10 +18,10 @@ from deepmd.tf.nvnmd.data.data import (
     jdata_deepmd_input_v1_ni128,
     jdata_deepmd_input_v1_ni256,
 )
-from deepmd.tf.nvnmd.utils.fio import (
+from deepmd.nvnmd.utils.fio import (
     FioDic,
 )
-from deepmd.tf.nvnmd.utils.op import (
+from deepmd.nvnmd.utils.op import (
     r2s,
 )
 
@@ -45,7 +46,7 @@ class NvnmdConfig:
         self.version = 0
         self.enable = False
         self.map = {}
-        self.config = jdata_config_v0.copy()
+        self.config = copy.deepcopy(jdata_config_v0)
         self.save_path = "nvnmd/config.npy"
         self.weight = {}
         self.init_from_jdata(jdata)
@@ -135,20 +136,20 @@ class NvnmdConfig:
         log.debug("#Set nvnmd version as %d " % self.version)
         if self.version == 0:
             if self.max_nnei == 128:
-                self.jdata_deepmd_input = jdata_deepmd_input_v0_ni128.copy()
-                self.config = jdata_config_v0_ni128.copy()
+                self.jdata_deepmd_input = copy.deepcopy(jdata_deepmd_input_v0_ni128)
+                self.config = copy.deepcopy(jdata_config_v0_ni128)
             elif self.max_nnei == 256:
-                self.jdata_deepmd_input = jdata_deepmd_input_v0_ni256.copy()
-                self.config = jdata_config_v0_ni256.copy()
+                self.jdata_deepmd_input = copy.deepcopy(jdata_deepmd_input_v0_ni256)
+                self.config = copy.deepcopy(jdata_config_v0_ni256)
             else:
                 log.error("The max_nnei only can be set as 128|256 for version 0")
         if self.version == 1:
             if self.max_nnei == 128:
-                self.jdata_deepmd_input = jdata_deepmd_input_v1_ni128.copy()
-                self.config = jdata_config_v1_ni128.copy()
+                self.jdata_deepmd_input = copy.deepcopy(jdata_deepmd_input_v1_ni128)
+                self.config = copy.deepcopy(jdata_config_v1_ni128)
             elif self.max_nnei == 256:
-                self.jdata_deepmd_input = jdata_deepmd_input_v1_ni256.copy()
-                self.config = jdata_config_v1_ni256.copy()
+                self.jdata_deepmd_input = copy.deepcopy(jdata_deepmd_input_v1_ni256)
+                self.config = copy.deepcopy(jdata_config_v1_ni256)
             else:
                 log.error("The max_nnei only can be set as 128|256 for version 1")
 
@@ -301,8 +302,8 @@ class NvnmdConfig:
         nvnmd_cfg.save()
         # check
         log.info(f"the range of s is [{smin}, {smax}]")
-        if smax - smin > 16.0:
-            log.warning("the range of s is over the limit (smax - smin) > 16.0")
+        if smax - smin > 32.0:
+            log.warning("the range of s is over the limit (smax - smin) > 32.0")
             log.warning(
                 "Please reset the rcut_smth as a bigger value to fix this warning"
             )
@@ -364,7 +365,7 @@ class NvnmdConfig:
 
     def get_deepmd_jdata(self):
         r"""Generate input script with member element one by one."""
-        jdata = self.jdata_deepmd_input.copy()
+        jdata = copy.deepcopy(self.jdata_deepmd_input)
         jdata["model"] = self.get_model_jdata()
         jdata["nvnmd"] = self.get_nvnmd_jdata()
         jdata["learning_rate"] = self.get_learning_rate_jdata()

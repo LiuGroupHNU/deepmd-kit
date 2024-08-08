@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 
-from deepmd.tf.env import (
+from deepmd.env import (
     GLOBAL_NP_FLOAT_PRECISION,
     GLOBAL_TF_FLOAT_PRECISION,
     op_module,
@@ -11,16 +11,16 @@ from deepmd.tf.env import (
 )
 
 #
-from deepmd.tf.nvnmd.utils.config import (
+from deepmd.nvnmd.utils.config import (
     nvnmd_cfg,
 )
-from deepmd.tf.nvnmd.utils.weight import (
+from deepmd.nvnmd.utils.weight import (
     get_normalize,
 )
-from deepmd.tf.utils.graph import (
+from deepmd.utils.graph import (
     get_tensor_by_name_from_graph,
 )
-from deepmd.tf.utils.network import (
+from deepmd.utils.network import (
     embedding_net,
 )
 
@@ -57,7 +57,7 @@ def check_switch_range(davg, dstd):
     if min_dist is not None:
         nvnmd_cfg.dscp["dmin"] = min_dist
         nvnmd_cfg.save()
-
+    
     # if davg and dstd is None, the model initial mode is in
     #  'init_from_model', 'restart', 'init_from_frz_model', 'finetune'
     if (davg is not None) and (dstd is not None):
